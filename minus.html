@@ -48,11 +48,9 @@ var numbers;
 
 var game = new Phaser.Game(config);
 
-function preload ()
-{
+function preload () {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.image('0', 'assets/number0.png');
     this.load.image('1', 'assets/number1.png');
@@ -66,13 +64,10 @@ function preload ()
     this.load.image('9', 'assets/number9.png');
     this.load.image('10', 'assets/number10.png');
 
-
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    
 }
 
-function create ()
-{
+function create () {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
@@ -119,10 +114,8 @@ function create ()
     // initial number generation
     numbers = this.physics.add.group();
 
-    for (var i = 0; i < 11; i++)
-    {
+    for (var i = 0; i < 11; i++) {
         numbers.create((30 + (i * 70)), 0, i).setBounceY(Phaser.Math.FloatBetween(0.6, 0.9));
-        //sprite.smoothed = false;
     }
 
     //  Input Events
@@ -145,40 +138,31 @@ function create ()
     this.physics.add.collider(player, bombs, hitBomb, null, this);
 }
 
-function update ()
-{
-    if (gameOver)
-    {
+function update () {
+    if (gameOver) {
         return;
     }
 
-    if (cursors.left.isDown)
-    {
+    if (cursors.left.isDown) {
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown)
-    {
+    } else if (cursors.right.isDown) {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
-    }
-    else
-    {
+    } else {
         player.setVelocityX(0);
 
         player.anims.play('turn');
     }
 
-    if (cursors.up.isDown && player.body.touching.down)
-    {
+    if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-330);
     }
 }
 
-function hitNumber (player, number)
-{
+function hitNumber (player, number) {
     number.disableBody(true, true); //clear
 
     if(answer == number.texture.key) {
@@ -186,19 +170,19 @@ function hitNumber (player, number)
         numbers.children.iterate(function (child) {
             child.disableBody(true, child.x, 0, true, true);
         });
-
+        
+        if (score > maxScore) {
+            maxScore = score;
+        }
         generateProblem ();
 
     } else {
         score -= 5;
     }
 
-    (score > maxScore)? (maxScore = score):(maxScore = maxScore);
-    
     scoreText.setText('Score: ' + score);
 
-    if (numbers.countActive(true) === 0)
-    {
+    if (numbers.countActive(true) === 0) {
         // generate random number
         var randomNumber = [0, 0, 0, 0, 0];
         randomNumber = randomNumber.map(function () { return Phaser.Math.Between(0, 10)});
@@ -219,7 +203,7 @@ function hitNumber (player, number)
             }
         });
 
-        if((maxScore > 0) && ((maxScore % 50) == 0)) {
+        if((maxScore > 0) && (maxScore == 50 || maxScore == 55 || maxScore == 100 || maxScore == 105) ) {
             var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
             var bomb = bombs.create(x, 16, 'bomb');
@@ -231,8 +215,7 @@ function hitNumber (player, number)
     }
 }
 
-function hitBomb (player, bomb)
-{
+function hitBomb (player, bomb) {
     this.physics.pause();
 
     player.setTint(0xff0000);
