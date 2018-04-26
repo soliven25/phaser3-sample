@@ -178,10 +178,7 @@ function update ()
 
 function hitNumber (player, number)
 {
-    number.disableBody(true, true);
-    console.log(number);
-    console.log(number.texture.key);
-    //  Add and update the score
+    number.disableBody(true, true); //clear
 
     if(answer == number.texture.key) {
         score += 10;
@@ -199,13 +196,25 @@ function hitNumber (player, number)
 
     if (numbers.countActive(true) === 0)
     {
+        // generate random number
+        var randomNumber = [0, 0, 0, 0, 0];
+        randomNumber = randomNumber.map(function () { return Phaser.Math.Between(0, 10)});
         //  A new batch of stars to collect
         numbers.children.iterate(function (child) {
 
-            child.enableBody(true, child.x, 0, true, true);
+            if(child.texture.key == answer) {
+                child.enableBody(true, Phaser.Math.Between(20, 780), 0, true, true);
+            }
 
+            // to check child is in the randomNumber array if is in, generate number
+            if(randomNumber.some(function (element) {
+
+                return element == this.toString(); 
+                }, child.texture.key)) {
+
+                child.enableBody(true, Phaser.Math.Between(20, 780), 0, true, true);
+            }
         });
-
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
         var bomb = bombs.create(x, 16, 'bomb');
