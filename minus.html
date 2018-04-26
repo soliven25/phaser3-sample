@@ -203,7 +203,7 @@ function hitNumber (player, number)
         numbers.children.iterate(function (child) {
 
             if(child.texture.key == answer) {
-                child.enableBody(true, Phaser.Math.Between(20, 780), 0, true, true);
+                child.enableBody(true, child.x, 0, true, true);
             }
 
             // to check child is in the randomNumber array if is in, generate number
@@ -212,7 +212,7 @@ function hitNumber (player, number)
                 return element == this.toString(); 
                 }, child.texture.key)) {
 
-                child.enableBody(true, Phaser.Math.Between(20, 780), 0, true, true);
+                child.enableBody(true, child.x, 0, true, true);
             }
         });
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
