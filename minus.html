@@ -37,6 +37,7 @@ var bombs;
 var platforms;
 var cursors;
 var score = 0;
+var maxScore = 0;
 var gameOver = false;
 var scoreText;
 var problemText;
@@ -191,6 +192,8 @@ function hitNumber (player, number)
     } else {
         score -= 5;
     }
+
+    (score > maxScore)? (maxScore = score):(maxScore = maxScore);
     
     scoreText.setText('Score: ' + score);
 
@@ -215,14 +218,16 @@ function hitNumber (player, number)
                 child.enableBody(true, child.x, 0, true, true);
             }
         });
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-        var bomb = bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        bomb.allowGravity = false;
+        if((maxScore > 0) && ((maxScore % 50) == 0)) {
+            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
+            var bomb = bombs.create(x, 16, 'bomb');
+            bomb.setBounce(1);
+            bomb.setCollideWorldBounds(true);
+            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            bomb.allowGravity = false;
+        }
     }
 }
 
