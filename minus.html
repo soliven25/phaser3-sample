@@ -8,6 +8,8 @@
         body {
             margin: 0;
         }
+
+        canvas {   display : block;   margin : auto;}
     </style>
 </head>
 <body>
@@ -137,6 +139,7 @@ function create () {
     this.physics.add.overlap(player, numbers, hitNumber, null, this);
 
     this.physics.add.collider(player, bombs, hitBomb, null, this);
+
 }
 
 function update () {
@@ -166,7 +169,7 @@ function update () {
 function hitNumber (player, number) {
     number.disableBody(true, true); //clear
 
-    if(answer == number.texture.key) {
+    if (answer == number.texture.key) {
         score += 10;
         numbers.children.iterate(function (child) {
             child.disableBody(true, child.x, 0, true, true);
@@ -204,7 +207,7 @@ function hitNumber (player, number) {
             }
         });
 
-        if((maxScore > 0) && (maxScore == 50 || maxScore == 55 || maxScore == 100 || maxScore == 105) ) {
+        if ((maxScore > 0) && (maxScore == 50 || maxScore == 55 || maxScore == 100 || maxScore == 105)) {
             var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
             var bomb = bombs.create(x, 16, 'bomb');
@@ -240,6 +243,7 @@ function generateProblem () {
 }
 
 </script>
-
+<audio loop [src]="https://player.vimeo.com/external/260010170.m3u8?s=a7a5b80ae7f2171b76b32439d5fc19a71fe660f4" controlsList="nodownload">
+</audio>
 </body>
 </html>
